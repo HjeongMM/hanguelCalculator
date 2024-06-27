@@ -11,11 +11,7 @@ class ViewController: UIViewController {
     @IBOutlet var 버튼들: [UIButton]!
     @IBOutlet weak var 표시창: UILabel!
     
-    private var 입력된정수: Int?
-    private var 현재연산자: 연산자?
     private var 새로운입력 = true
-    private var 결과값: Int?
-    private var 계산완료: Bool = true
     private var 현재식 = ""
     
     override func viewDidLoad() {
@@ -43,6 +39,14 @@ class ViewController: UIViewController {
     }
     
     private func 연산자처리(_ 연산: 연산자) {
+        if 현재식.isEmpty {
+            if 연산 != .초기화 {
+                초기화()
+            }
+            return
+        }
+        
+        정리현재식()
         switch 연산 {
         case .더하기, .빼기, .곱하기, .나누기:
             현재식 += 연산.연산기호
@@ -50,10 +54,10 @@ class ViewController: UIViewController {
         case .는:
             guard !현재식.isEmpty else { return }
             let expression = NSExpression(format: 현재식)
-            if let result = expression.expressionValue(with: nil, context: nil) as? NSNumber {
-                let intResult = Int(round(result.doubleValue))
-                표시창.text = "\(intResult)"
-                현재식 = "\(intResult)"
+            if let 결과 = expression.expressionValue(with: nil, context: nil) as? NSNumber {
+                let 정수결과 = Int(round(결과.doubleValue))
+                표시창.text = "\(정수결과)"
+                현재식 = "\(정수결과)"
             } else {
                 표시창.text = "Error"
                 현재식 = ""
@@ -64,11 +68,14 @@ class ViewController: UIViewController {
         }
     }
     
+    private func 정리현재식() {
+        if let 마지막문자 = 현재식.last, "+-*/".contains(마지막문자) {
+            현재식.removeLast()
+        }
+    }
+    
     private func 초기화() {
         표시창.text = "0"
-        입력된정수 = nil
-        현재연산자 = nil
-        결과값 = nil
         새로운입력 = true
         현재식 = ""
     }
@@ -92,15 +99,6 @@ enum 연산자: Int {
         case .초기화: return "AC"
         }
     }
-    func 연산수행(_ 첫번째: Int, _ 두번째: Int) -> Int {
-        switch self {
-        case .더하기: return 첫번째 + 두번째
-        case .빼기: return 첫번째 - 두번째
-        case .곱하기: return 첫번째 * 두번째
-        case .나누기: return 첫번째 / 두번째
-        default: return 0
-        }
-    }
 }
 
 extension ViewController {
@@ -113,5 +111,4 @@ extension ViewController {
         }
         표시창.text = "0"
     }
-    
 }
