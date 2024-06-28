@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     private var 새로운입력 = true
     private var 현재식 = ""
+    private var 계산완료 = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +29,17 @@ class ViewController: UIViewController {
     }
     
     func 숫자입력(_ 숫자: Int) {
+        if 계산완료 {
+            초기화()
+            계산완료 = false
+        }
+        
         if 새로운입력 {
-            표시창.text = "\(숫자)"
-            현재식 += "\(숫자)"
-            새로운입력 = false
+            if 숫자 != 0 || !현재식.isEmpty {
+                표시창.text = 표시창.text == "0" ? "\(숫자)" : (표시창.text ?? "") + "\(숫자)"
+                현재식 += "\(숫자)"
+                새로운입력 = false
+            }
         } else {
             표시창.text? += "\(숫자)"
             현재식 += "\(숫자)"
@@ -39,18 +47,16 @@ class ViewController: UIViewController {
     }
     
     private func 연산자처리(_ 연산: 연산자) {
-        if 현재식.isEmpty {
-            if 연산 != .초기화 {
-                초기화()
-            }
-            return
-        }
-        
         정리현재식()
+        
         switch 연산 {
         case .더하기, .빼기, .곱하기, .나누기:
-            현재식 += 연산.연산기호
+            if !현재식.isEmpty && !["+", "-", "*", "/"].contains(현재식.last!) {
+                현재식 += 연산.연산기호
+                표시창.text? += 연산.연산기호
+            }
             새로운입력 = true
+            계산완료 = false
         case .는:
             guard !현재식.isEmpty else { return }
             let expression = NSExpression(format: 현재식)
@@ -58,6 +64,7 @@ class ViewController: UIViewController {
                 let 정수결과 = Int(round(결과.doubleValue))
                 표시창.text = "\(정수결과)"
                 현재식 = "\(정수결과)"
+                계산완료 = true
             } else {
                 표시창.text = "Error"
                 현재식 = ""
@@ -78,6 +85,7 @@ class ViewController: UIViewController {
         표시창.text = "0"
         새로운입력 = true
         현재식 = ""
+        계산완료 = false
     }
 }
 
