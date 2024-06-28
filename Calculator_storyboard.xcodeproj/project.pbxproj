@@ -42,6 +42,7 @@
 		E56142A82C2ADD7000A41D40 = {
 			isa = PBXGroup;
 			children = (
+				E5A8C33B2C2E49F800FB9FAF /* README.md */,
 				E56142B32C2ADD7000A41D40 /* Calculator_storyboard */,
 				E56142B22C2ADD7000A41D40 /* Products */,
 			);
@@ -62,7 +63,6 @@
 				E56142B62C2ADD7000A41D40 /* SceneDelegate.swift */,
 				E56142B82C2ADD7000A41D40 /* ViewController.swift */,
 				E56142BA2C2ADD7000A41D40 /* Main.storyboard */,
-				E5A8C33B2C2E49F800FB9FAF /* README.md */,
 				E56142BD2C2ADD7200A41D40 /* Assets.xcassets */,
 				E56142BF2C2ADD7200A41D40 /* LaunchScreen.storyboard */,
 				E56142C22C2ADD7200A41D40 /* Info.plist */,
