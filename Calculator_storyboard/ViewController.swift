@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//git test
 class ViewController: UIViewController {
     @IBOutlet var 버튼들: [UIButton]!
     @IBOutlet weak var 표시창: UILabel!
